@@ -21,7 +21,7 @@ gh extension install kexi/gh-boscaiolo
 
 # インストール後、依存関係をインストール
 cd ~/.local/share/gh/extensions/gh-boscaiolo
-npm install
+pnpm install
 ```
 
 ### npm/pnpm 経由
