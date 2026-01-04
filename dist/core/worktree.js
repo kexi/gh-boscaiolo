@@ -126,8 +126,8 @@ export class WorktreeManager {
         const output = await this.git.execute(`branch --merged ${baseBranch}`);
         return output
             .split('\n')
-            .map(line => line.trim().replace(/^\*\s+/, ''))
-            .filter(Boolean);
+            .map(line => line.trim().replace(/^[*+]\s+/, ''))
+            .filter(branch => branch && branch !== baseBranch);
     }
     async hasUncommittedChanges(worktreePath) {
         try {
