@@ -17,7 +17,11 @@ Git worktree のクリーンアップに特化した GitHub CLI 拡張機能で�
 ### GitHub CLI 経由（推奨）
 
 ```bash
-gh extension install YOUR_USERNAME/gh-boscaiolo
+gh extension install kexi/gh-boscaiolo
+
+# インストール後、依存関係をインストール
+cd ~/.local/share/gh/extensions/gh-boscaiolo
+npm install
 ```
 
 ### npm/pnpm 経由
