@@ -4,6 +4,10 @@ node_modules/
 # Build output (dist/ is committed for gh extension)
 # dist/
 
+# Compiled binaries (Bun)
+dist/gh-boscaiolo
+dist/gh-boscaiolo-*
+
 # Logs
 *.log
 npm-debug.log*
