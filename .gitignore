@@ -14,6 +14,10 @@ pnpm-debug.log*
 # Test worktrees
 .worktrees/
 
+# Test files (temporary)
+test-execa-simple.mjs
+test-node-pty.js
+
 # OS files
 .DS_Store
 Thumbs.db
