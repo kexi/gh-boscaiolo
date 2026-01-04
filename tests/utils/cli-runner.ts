@@ -44,6 +44,8 @@ export class CLIRunner extends EventEmitter {
 	private output: string = '';
 	private cliPath: string;
 	private isInteractive: boolean = false;
+	private exitCode: number | null = null;
+	private hasExited: boolean = false;
 
 	constructor() {
 		super();
@@ -79,12 +81,13 @@ export class CLIRunner extends EventEmitter {
 				reject: false,
 			});
 
-			let settled = false;
+			// オブジェクトで包むことで参照渡しを実現
+			const state = { settled: false };
 
 			const timer = this.setupTimeoutHandler(timeout, () => {
-				const isNotSettled = !settled;
+				const isNotSettled = !state.settled;
 				if (isNotSettled) {
-					settled = true;
+					state.settled = true;
 					this.kill();
 					reject(CLITestError.timeout(timeout));
 				}
@@ -92,13 +95,13 @@ export class CLIRunner extends EventEmitter {
 
 			this.setupStdoutListener();
 			this.setupStderrListener();
-			this.setupProcessExitHandler(settled, timer, resolve);
+			this.setupProcessExitHandler(state, timer, resolve);
 
 			// 起動確認
 			setTimeout(() => {
-				const isNotSettled = !settled;
+				const isNotSettled = !state.settled;
 				if (isNotSettled) {
-					settled = true;
+					state.settled = true;
 					clearTimeout(timer);
 					resolve();
 				}
@@ -160,7 +163,7 @@ export class CLIRunner extends EventEmitter {
 	 * プロセス終了ハンドラーを設定
 	 */
 	private setupProcessExitHandler(
-		settled: boolean,
+		state: { settled: boolean },
 		timer: NodeJS.Timeout,
 		resolve: () => void
 	): void {
@@ -171,10 +174,12 @@ export class CLIRunner extends EventEmitter {
 
 		this.process
 			.then((result) => {
+				this.exitCode = result.exitCode;
+				this.hasExited = true;
 				this.emit('exit', result.exitCode);
-				const isNotSettled = !settled;
+				const isNotSettled = !state.settled;
 				if (isNotSettled) {
-					settled = true;
+					state.settled = true;
 					clearTimeout(timer);
 					resolve();
 				}
@@ -184,10 +189,12 @@ export class CLIRunner extends EventEmitter {
 				if (hasOutput) {
 					this.output += error.all;
 				}
+				this.exitCode = error.exitCode || 1;
+				this.hasExited = true;
 				this.emit('exit', error.exitCode || 1);
-				const isNotSettled = !settled;
+				const isNotSettled = !state.settled;
 				if (isNotSettled) {
-					settled = true;
+					state.settled = true;
 					clearTimeout(timer);
 					resolve();
 				}
@@ -228,6 +235,8 @@ export class CLIRunner extends EventEmitter {
 
 			// プロセス終了を監視
 			this.ptyProcess.onExit((event) => {
+				this.exitCode = event.exitCode;
+				this.hasExited = true;
 				this.emit('exit', event.exitCode);
 				const isNotSettled = !settled;
 				if (isNotSettled) {
@@ -315,6 +324,12 @@ export class CLIRunner extends EventEmitter {
 	 */
 	async waitForExit(timeout = EXIT_WAIT_TIMEOUT): Promise<number> {
 		return new Promise((resolve, reject) => {
+			// すでにプロセスが終了している場合は即座に解決
+			const alreadyExited = this.hasExited;
+			if (alreadyExited) {
+				return resolve(this.exitCode ?? 0);
+			}
+
 			const isUsingPty = this.isInteractive;
 			const noProcess = isUsingPty ? !this.ptyProcess : !this.process;
 			if (noProcess) {
