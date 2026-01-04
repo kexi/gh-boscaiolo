@@ -8,7 +8,6 @@ export class GitExecutor {
         cwd: options.cwd || process.cwd(),
         encoding: 'utf-8',
         stdio: ['pipe', 'pipe', 'pipe'],
-        shell: '/bin/bash',
       });
       return output.trim();
     } catch (error: unknown) {

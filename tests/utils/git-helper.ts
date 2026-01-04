@@ -1,7 +1,7 @@
 import { execSync } from 'child_process';
 import { tmpdir } from 'os';
 import { join } from 'path';
-import { mkdtempSync, rmSync } from 'fs';
+import { mkdtempSync, rmSync, writeFileSync } from 'fs';
 
 export interface TestRepoOptions {
 	worktrees?: string[]; // 作成するworktree名のリスト
@@ -59,7 +59,11 @@ export class GitTestHelper {
 	 * 初期コミットを作成
 	 */
 	private createInitialCommit(): void {
-		this.exec('echo "# Test Repo" > README.md');
+		const isNoRepoPath = !this.repoPath;
+		if (isNoRepoPath) {
+			throw new Error('Repository not created');
+		}
+		writeFileSync(join(this.repoPath, 'README.md'), '# Test Repo\n');
 		this.exec('git add README.md');
 		this.exec('git commit -m "Initial commit"');
 		this.exec('git branch -M main');
@@ -91,7 +95,7 @@ export class GitTestHelper {
 	private createWorktreeWithCommit(branchName: string): void {
 		const wtPath = this.getWorktreePath(branchName);
 		this.exec(`git worktree add "${wtPath}" -b ${branchName}`);
-		this.exec(`cd "${wtPath}" && echo "${branchName}" > ${branchName}.txt`);
+		writeFileSync(join(wtPath, `${branchName}.txt`), `${branchName}\n`);
 		this.exec(`cd "${wtPath}" && git add ${branchName}.txt`);
 		this.exec(`cd "${wtPath}" && git commit -m "Add ${branchName}"`);
 	}
@@ -111,7 +115,7 @@ export class GitTestHelper {
 		for (const name of branchNames) {
 			const wtPath = this.getWorktreePath(name);
 			this.exec(`git worktree add "${wtPath}" -b ${name}`);
-			this.exec(`rm -rf "${wtPath}"`);
+			rmSync(wtPath, { recursive: true, force: true });
 		}
 	}
 
