@@ -1,0 +1,49 @@
+name: Dependency Security Check
+
+on:
+  pull_request:
+    paths:
+      - 'package.json'
+      - 'pnpm-lock.yaml'
+  schedule:
+    # 毎日午前9時(JST)に実行
+    - cron: '0 0 * * *'
+  workflow_dispatch:
+
+jobs:
+  check-package-age:
+    name: パッケージ公開日チェック
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Check package publish dates
+        id: check
+        run: |
+          node scripts/check-package-age.js
+        continue-on-error: true
+
+      - name: Comment on PR (if recent packages found)
+        if: github.event_name == 'pull_request' && steps.check.outcome == 'failure'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `⚠️ **セキュリティ警告**\n\n1日以内に公開されたパッケージが検出されました。\n\nサプライチェーン攻撃のリスクを考慮し、以下を確認してください：\n- パッケージの公式性\n- パッケージメンテナの信頼性\n- 最近の異常なアクティビティの有無\n\n可能であれば、パッケージが1日以上経過してからマージすることを推奨します。`
+            })
+
+      - name: Fail if recent packages found
+        if: steps.check.outcome == 'failure'
+        run: |
+          echo "::warning::1日以内に公開されたパッケージが見つかりました。詳細はログを確認してください。"
+          exit 1
