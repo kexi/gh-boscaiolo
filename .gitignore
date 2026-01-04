@@ -1,8 +1,8 @@
 # Dependencies
 node_modules/
 
-# Build output (dist/ is committed for gh extension)
-# dist/
+# Build output
+dist/
 
 # Compiled binaries (Bun)
 dist/gh-boscaiolo
