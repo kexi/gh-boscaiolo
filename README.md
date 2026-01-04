@@ -14,7 +14,36 @@ Git worktree のクリーンアップに特化した GitHub CLI 拡張機能で�
 
 ## インストール
 
-### GitHub CLI 経由（推奨）
+### スタンドアロンバイナリ（推奨）
+
+依存関係不要の単一バイナリをダウンロードできます：
+
+```bash
+# macOS (Apple Silicon)
+curl -L https://github.com/kexi/gh-boscaiolo/releases/latest/download/gh-boscaiolo-darwin-arm64 -o gh-boscaiolo
+chmod +x gh-boscaiolo
+sudo mv gh-boscaiolo /usr/local/bin/
+
+# macOS (Intel)
+curl -L https://github.com/kexi/gh-boscaiolo/releases/latest/download/gh-boscaiolo-darwin-x64 -o gh-boscaiolo
+chmod +x gh-boscaiolo
+sudo mv gh-boscaiolo /usr/local/bin/
+
+# Linux (x64)
+curl -L https://github.com/kexi/gh-boscaiolo/releases/latest/download/gh-boscaiolo-linux-x64 -o gh-boscaiolo
+chmod +x gh-boscaiolo
+sudo mv gh-boscaiolo /usr/local/bin/
+
+# Linux (ARM64)
+curl -L https://github.com/kexi/gh-boscaiolo/releases/latest/download/gh-boscaiolo-linux-arm64 -o gh-boscaiolo
+chmod +x gh-boscaiolo
+sudo mv gh-boscaiolo /usr/local/bin/
+
+# Windows (PowerShell)
+Invoke-WebRequest -Uri "https://github.com/kexi/gh-boscaiolo/releases/latest/download/gh-boscaiolo-windows-x64.exe" -OutFile "gh-boscaiolo.exe"
+```
+
+### GitHub CLI 経由
 
 ```bash
 gh extension install kexi/gh-boscaiolo
