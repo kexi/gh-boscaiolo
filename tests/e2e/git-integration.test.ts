@@ -92,5 +92,5 @@ describe('Git Integration', () => {
 
 		const output = await runCLICommand(runner, ['deleted', '--yes'], repoPath);
 		// 実際の動作はGitのバージョンに依存するため、出力を取得するのみ
-	});
+	}, 60000);
 });

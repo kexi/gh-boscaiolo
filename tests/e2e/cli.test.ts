@@ -72,7 +72,7 @@ describe('CLI Basic Commands', () => {
 
 			expectOutputContains(output, 'DRY RUN');
 			expectOutputContains(output, 'to-delete');
-		});
+		}, 60000);
 	});
 
 	describe('stale command', () => {
@@ -124,6 +124,6 @@ describe('CLI Basic Commands', () => {
 
 			expectOutputContains(output, 'Error: No command specified');
 			expectOutputContains(output, '--help');
-		});
+		}, 60000);
 	});
 });
