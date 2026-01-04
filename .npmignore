@@ -1,0 +1,19 @@
+# Source files
+src/
+tests/
+*.test.ts
+*.spec.ts
+
+# Config files
+tsconfig.json
+.github/
+.git/
+.gitignore
+
+# Development files
+.worktrees/
+node_modules/
+*.log
+.DS_Store
+
+# Build artifacts that should be included are in the "files" field in package.json
