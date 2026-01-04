@@ -41,10 +41,10 @@ jobs:
       - name: Build binaries for all platforms
         run: |
           pnpm build:binary:darwin-arm64
-          pnpm build:binary:darwin-x64
-          pnpm build:binary:linux-x64
+          pnpm build:binary:darwin-amd64
+          pnpm build:binary:linux-amd64
           pnpm build:binary:linux-arm64
-          pnpm build:binary:windows-x64
+          pnpm build:binary:windows-amd64
 
       - name: Upload binaries
         uses: actions/upload-artifact@v4
@@ -104,11 +104,11 @@ jobs:
             chmod +x gh-boscaiolo
 
             # macOS (Intel)
-            curl -L https://github.com/${{ github.repository }}/releases/download/v${{ steps.get_version.outputs.VERSION }}/gh-boscaiolo-darwin-x64 -o gh-boscaiolo
+            curl -L https://github.com/${{ github.repository }}/releases/download/v${{ steps.get_version.outputs.VERSION }}/gh-boscaiolo-darwin-amd64 -o gh-boscaiolo
             chmod +x gh-boscaiolo
 
             # Linux (x64)
-            curl -L https://github.com/${{ github.repository }}/releases/download/v${{ steps.get_version.outputs.VERSION }}/gh-boscaiolo-linux-x64 -o gh-boscaiolo
+            curl -L https://github.com/${{ github.repository }}/releases/download/v${{ steps.get_version.outputs.VERSION }}/gh-boscaiolo-linux-amd64 -o gh-boscaiolo
             chmod +x gh-boscaiolo
 
             # Linux (ARM64)
@@ -134,10 +134,10 @@ jobs:
             See [CHANGELOG.md](CHANGELOG.md) for full release notes.
           files: |
             dist/gh-boscaiolo-darwin-arm64
-            dist/gh-boscaiolo-darwin-x64
-            dist/gh-boscaiolo-linux-x64
+            dist/gh-boscaiolo-darwin-amd64
+            dist/gh-boscaiolo-linux-amd64
             dist/gh-boscaiolo-linux-arm64
-            dist/gh-boscaiolo-windows-x64.exe
+            dist/gh-boscaiolo-windows-amd64.exe
           draft: false
           prerelease: false
 

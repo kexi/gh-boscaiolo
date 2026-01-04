@@ -25,12 +25,12 @@ chmod +x gh-boscaiolo
 sudo mv gh-boscaiolo /usr/local/bin/
 
 # macOS (Intel)
-curl -L https://github.com/kexi/gh-boscaiolo/releases/latest/download/gh-boscaiolo-darwin-x64 -o gh-boscaiolo
+curl -L https://github.com/kexi/gh-boscaiolo/releases/latest/download/gh-boscaiolo-darwin-amd64 -o gh-boscaiolo
 chmod +x gh-boscaiolo
 sudo mv gh-boscaiolo /usr/local/bin/
 
 # Linux (x64)
-curl -L https://github.com/kexi/gh-boscaiolo/releases/latest/download/gh-boscaiolo-linux-x64 -o gh-boscaiolo
+curl -L https://github.com/kexi/gh-boscaiolo/releases/latest/download/gh-boscaiolo-linux-amd64 -o gh-boscaiolo
 chmod +x gh-boscaiolo
 sudo mv gh-boscaiolo /usr/local/bin/
 
@@ -40,18 +40,16 @@ chmod +x gh-boscaiolo
 sudo mv gh-boscaiolo /usr/local/bin/
 
 # Windows (PowerShell)
-Invoke-WebRequest -Uri "https://github.com/kexi/gh-boscaiolo/releases/latest/download/gh-boscaiolo-windows-x64.exe" -OutFile "gh-boscaiolo.exe"
+Invoke-WebRequest -Uri "https://github.com/kexi/gh-boscaiolo/releases/latest/download/gh-boscaiolo-windows-amd64.exe" -OutFile "gh-boscaiolo.exe"
 ```
 
 ### GitHub CLI 経由
 
 ```bash
 gh extension install kexi/gh-boscaiolo
-
-# インストール後、依存関係をインストール
-cd ~/.local/share/gh/extensions/gh-boscaiolo
-pnpm install
 ```
+
+> **Note**: プリコンパイルバイナリが自動ダウンロードされるため、追加の依存関係インストールは不要です。
 
 ### npm/pnpm 経由
 
