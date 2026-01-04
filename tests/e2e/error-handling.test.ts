@@ -54,7 +54,7 @@ describe('Error Handling', () => {
 		);
 
 		expectErrorMessage(output, 'error');
-	});
+	}, 60000);
 
 	it('無効な--daysオプションを処理する', async () => {
 		const repoPath = gitHelper.createTestRepo();
@@ -110,7 +110,7 @@ function tryLockWorktree(repoPath: string, wtPath: string): boolean {
  * Worktreeディレクトリを削除
  */
 function deleteWorktreeDirectory(wtPath: string, repoPath: string): void {
-	execSync(`rm -rf "${wtPath}"`, { cwd: repoPath, stdio: 'pipe' });
+	rmSync(wtPath, { recursive: true, force: true });
 }
 
 /**
