@@ -173,6 +173,60 @@ gh boscaiolo deleted --dry-run
 - Node.js 18.0.0 以上
 - pnpm（推奨）
 
+### 開発環境セットアップ
+
+このプロジェクトでは [mise](https://mise.jdx.dev/) を使用して Node.js と pnpm のバージョンを管理しています。
+
+#### mise のインストール
+
+```bash
+# macOS (Homebrew)
+brew install mise
+
+# Linux
+curl https://mise.run | sh
+
+# その他のインストール方法は公式ドキュメントを参照
+# https://mise.jdx.dev/getting-started.html
+```
+
+#### mise の有効化
+
+シェルの設定ファイル（`.bashrc`, `.zshrc` など）に以下を追加：
+
+```bash
+# Bash
+echo 'eval "$(mise activate bash)"' >> ~/.bashrc
+
+# Zsh
+echo 'eval "$(mise activate zsh)"' >> ~/.zshrc
+
+# Fish
+echo 'mise activate fish | source' >> ~/.config/fish/config.fish
+```
+
+設定を反映：
+
+```bash
+# Bash
+source ~/.bashrc
+
+# Zsh
+source ~/.zshrc
+
+# Fish
+source ~/.config/fish/config.fish
+```
+
+#### ツールのインストール
+
+```bash
+# リポジトリのルートディレクトリで実行
+mise install
+```
+
+これにより、`.mise.toml` で指定された Node.js 24 と pnpm の最新版が自動的にインストールされます。
+
 ### セットアップ
 
 ```bash
