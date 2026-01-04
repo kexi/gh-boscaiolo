@@ -52,4 +52,11 @@ const cli = meow(`
   },
 });
 
-render(<App command={cli.input[0]} flags={cli.flags} />);
+const { waitUntilExit } = render(<App command={cli.input[0]} flags={cli.flags} />);
+
+// Inkアプリケーションが終了したらプロセスも終了
+waitUntilExit().then(() => {
+	process.exit(0);
+}).catch(() => {
+	process.exit(1);
+});

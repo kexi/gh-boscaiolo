@@ -8,8 +8,8 @@ export default function DeletedCommand({ dryRun, verbose, yes }) {
     const [stage, setStage] = useState('loading');
     const [result, setResult] = useState(null);
     const { worktrees, loading, error } = useWorktrees();
-    // 削除されたブランチのworktreeをフィルター
-    const deletedWorktrees = worktrees.filter(wt => wt.branchDeleted);
+    // 削除されたブランチのworktreeをフィルター（prunableまたはbranchDeleted）
+    const deletedWorktrees = worktrees.filter(wt => wt.isPrunable || wt.branchDeleted);
     useEffect(() => {
         const hasLoaded = !loading;
         if (hasLoaded) {

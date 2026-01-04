@@ -50,5 +50,11 @@ const cli = meow(`
         },
     },
 });
-render(React.createElement(App, { command: cli.input[0], flags: cli.flags }));
+const { waitUntilExit } = render(React.createElement(App, { command: cli.input[0], flags: cli.flags }));
+// Inkアプリケーションが終了したらプロセスも終了
+waitUntilExit().then(() => {
+    process.exit(0);
+}).catch(() => {
+    process.exit(1);
+});
 //# sourceMappingURL=cli.js.map

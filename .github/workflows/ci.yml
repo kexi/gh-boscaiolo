@@ -14,7 +14,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
-        node: [18, 20, 22]
+        node: [20, 22]
 
     steps:
       - name: Checkout code
@@ -40,13 +40,17 @@ jobs:
       - name: Check TypeScript
         run: pnpm exec tsc --noEmit
 
-      - name: Test CLI executable
-        run: node bin/gh-boscaiolo --help
-        shell: bash
+      - name: Run E2E tests
+        run: pnpm test:e2e
+        timeout-minutes: 5
 
-      - name: Test list command
-        run: node bin/gh-boscaiolo list || true
-        shell: bash
+      - name: Upload coverage reports
+        if: matrix.os == 'ubuntu-latest' && matrix.node == '20'
+        uses: codecov/codecov-action@v4
+        with:
+          files: ./coverage/coverage-final.json
+          flags: e2e
+          fail_ci_if_error: false
 
   lint:
     name: Lint
