@@ -46,12 +46,7 @@
   "dependencies": {
     "date-fns": "^4.1.0",
     "ink": "^6.6.0",
-    "ink-box": "^1.0.0",
-    "ink-multi-select": "^2.0.0",
-    "ink-select-input": "^6.2.0",
     "ink-spinner": "^5.0.0",
-    "ink-table": "^3.1.0",
-    "ink-text-input": "^6.0.0",
     "meow": "^14.0.0",
     "react": "^19.2.3"
   },
