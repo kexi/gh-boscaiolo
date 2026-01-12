@@ -14,42 +14,13 @@ Git worktree のクリーンアップに特化した GitHub CLI 拡張機能で�
 
 ## インストール
 
-### スタンドアロンバイナリ（推奨）
-
-依存関係不要の単一バイナリをダウンロードできます：
-
-```bash
-# macOS (Apple Silicon)
-curl -L https://github.com/kexi/gh-boscaiolo/releases/latest/download/gh-boscaiolo-darwin-arm64 -o gh-boscaiolo
-chmod +x gh-boscaiolo
-sudo mv gh-boscaiolo /usr/local/bin/
-
-# macOS (Intel)
-curl -L https://github.com/kexi/gh-boscaiolo/releases/latest/download/gh-boscaiolo-darwin-amd64 -o gh-boscaiolo
-chmod +x gh-boscaiolo
-sudo mv gh-boscaiolo /usr/local/bin/
-
-# Linux (x64)
-curl -L https://github.com/kexi/gh-boscaiolo/releases/latest/download/gh-boscaiolo-linux-amd64 -o gh-boscaiolo
-chmod +x gh-boscaiolo
-sudo mv gh-boscaiolo /usr/local/bin/
-
-# Linux (ARM64)
-curl -L https://github.com/kexi/gh-boscaiolo/releases/latest/download/gh-boscaiolo-linux-arm64 -o gh-boscaiolo
-chmod +x gh-boscaiolo
-sudo mv gh-boscaiolo /usr/local/bin/
-
-# Windows (PowerShell)
-Invoke-WebRequest -Uri "https://github.com/kexi/gh-boscaiolo/releases/latest/download/gh-boscaiolo-windows-amd64.exe" -OutFile "gh-boscaiolo.exe"
-```
-
-### GitHub CLI 経由
+### GitHub CLI 経由（推奨）
 
 ```bash
 gh extension install kexi/gh-boscaiolo
 ```
 
-> **Note**: プリコンパイルバイナリが自動ダウンロードされるため、追加の依存関係インストールは不要です。
+> **Note**: プリコンパイルバイナリが自動ダウンロードされるため、追加の依存関係は不要です。
 
 ### npm/pnpm 経由
 
@@ -197,7 +168,7 @@ gh boscaiolo deleted --dry-run
 
 ### 必要要件
 
-- Node.js 18.0.0 以上
+- Node.js 20.0.0 以上
 - pnpm（推奨）
 
 ### 開発環境セットアップ
@@ -252,7 +223,7 @@ source ~/.config/fish/config.fish
 mise install
 ```
 
-これにより、`.mise.toml` で指定された Node.js 24 と pnpm の最新版が自動的にインストールされます。
+これにより、`.mise.toml` で指定された Node.js 20 と pnpm の最新版が自動的にインストールされます。
 
 ### セットアップ
 
@@ -269,6 +240,19 @@ pnpm build
 
 # ローカルでテスト
 ./bin/gh-boscaiolo list
+```
+
+### テスト
+
+```bash
+# テスト実行
+pnpm test
+
+# E2E テスト
+pnpm test:e2e
+
+# カバレッジレポート
+pnpm test:coverage
 ```
 
 ### プロジェクト構成
@@ -292,8 +276,14 @@ gh-boscaiolo/
 │   │   └── useWorktrees.ts        # Worktree データ取得フック
 │   └── types/
 │       └── index.ts               # TypeScript 型定義
+├── tests/
+│   ├── e2e/                       # E2E テスト
+│   └── utils/                     # テストユーティリティ
+├── scripts/
+│   └── check-package-age.js       # パッケージセキュリティチェック
 ├── bin/
 │   └── gh-boscaiolo               # 実行可能スクリプト
+├── vitest.config.ts               # テスト設定
 └── dist/                          # ビルド成果物
 ```
 
@@ -303,6 +293,7 @@ gh-boscaiolo/
 - **TypeScript**: 型安全性
 - **meow**: CLI 引数パーサー
 - **date-fns**: 日付フォーマット
+- **Vitest**: テストフレームワーク
 
 ## セキュリティポリシー
 
